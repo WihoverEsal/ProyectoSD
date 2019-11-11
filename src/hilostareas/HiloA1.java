@@ -13,7 +13,7 @@ public class HiloA1 extends Thread{
     public void run() {        
         try {            
             System.out.println("Hilo 1 en ejecución");
-            BufferedReader br = new BufferedReader(new FileReader("./src/serversockets/texto.txt"));
+            BufferedReader br = new BufferedReader(new FileReader("./src/datos/texto.txt"));
             String texto = "", s = br.readLine();
             while(s != null)
             {

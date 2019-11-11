@@ -1,6 +1,7 @@
 package cs;
 
 import static java.lang.Thread.sleep;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Vector;
 import org.apache.xmlrpc.*;
@@ -13,32 +14,38 @@ public class Client {
         try{
             XmlRpcClient rpcClient = new XmlRpcClient("http://localhost:8080/");
             Vector<Integer> params = new Vector<Integer>();
+            Vector<Object> parameters = new Vector<>();
             int opc = 0; 
-            Object procMenu;
+            Object procMenu = new Object();
             Scanner sc = new Scanner(System.in);
-            System.out.println("Conexion exitosa");            
+            System.out.println("Conexion exitosa");
             
-            Object menu = rpcClient.execute("myServer.desplegaMenu", params);
+            Object menu = rpcClient.execute("myServer.desplegaMenu", params);//Menu Sockets, RPC, RMI
             do{ 
                 params.clear();
                 System.out.println(menu);
-
-                opc = sc.nextInt();
+               
+                opc = Integer.parseInt(sc.nextLine());
                 params.add(new Integer(opc));
-
+                System.out.println(params);
                 procMenu = rpcClient.execute("myServer.solicitudMenu", params);
-                System.out.println(procMenu);
+                System.out.println(opc);
+                System.out.println(procMenu);//Menu busca letra, busca palabra
             }while(procMenu.equals(new String("Opcion no valida")));
             params.clear();
             
             int opc2 = opc;
-            opc = sc.nextInt();// 1 o 2
-            if(opc > 0 && opc < 3){
-                System.out.println("Dame los valores de x1 y x2");
-                //x1 = sc.nextInt();
-                //x2 = sc.nextInt();
-                c1 = sc.nextLine();
+            //System.out.println("opcion de menu funcionalidad");
+            opc = Integer.parseInt(sc.nextLine());// Lee la opcion del menu funcionalidad. 1 o 2
+            while(opc < 1 || opc > 3){
+                System.out.println("Opcion no valida. Vuelve a intentar");
+                System.out.println(procMenu);
+                opc = Integer.parseInt(sc.nextLine());// Lee la opcion del menu funcionalidad. 1 o 2
             }
+            
+            params.add(new Integer(opc));
+            System.out.println(params);
+            
             if(opc2 == 1){
                 params.add(new Integer(opc));
                 params.add(new Integer(c1));            
@@ -50,13 +57,18 @@ public class Client {
                 params.add(new Integer(x2));            
                 Object procOper = rpcClient.execute("myServer.procesamientoRPC", params);
                 System.out.println(procOper);
-            }else if(opc2 == 3){                
-                params.add(new Integer(opc));
-                params.add(new Integer(x1));
-                params.add(new Integer(x2));
-                Object procOper = rpcClient.execute("myServer.procesamientoRMI", params);
+            }else if(opc2 == 3){
+                Object procOper = rpcClient.execute("myServer.pideLetraoPalRMI", params);
+                System.out.println(procOper);//Pide letra o palabra
+                String pal = sc.nextLine();//Lee la palabra o letra a buscar
+                
+                parameters.add(new Integer(opc));
+                parameters.add(new String(pal));
+                
+                procOper = rpcClient.execute("myServer.procesamientoRMI", parameters);
                 System.out.println(procOper);
             }
+            
             sleep(1000);
         }catch(Exception ex){
             System.err.println("Client: " + ex);

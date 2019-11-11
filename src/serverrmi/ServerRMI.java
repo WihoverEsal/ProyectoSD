@@ -14,6 +14,10 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import funciontareas.*;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 public class ServerRMI {
     private static final int PUERTO = 8085; //Si cambias aquí el puerto, recuerda cambiarlo en el cliente
     Registry registry;
@@ -24,18 +28,25 @@ public class ServerRMI {
                             Sobrescribir opcionalmente los métodos que escribimos en la interfaz
             */
             @Override
-            public float sumar(float numero1, float numero2) throws RemoteException {
-                return numero1 + numero2;
+            public int buscaLetra(String pal) throws RemoteException, InterruptedException {
+                Tarea3A tA = new Tarea3A();
+                int matches = tA.tareaA(pal);
+                                
+                return matches;
             };
 
             @Override
-            public float restar(float numero1, float numero2) throws RemoteException {
-                return numero1 - numero2;
-            };  
+            public int buscaPalabra(String pal) throws RemoteException, IOException, InterruptedException {                
+                Tarea3B tB = new Tarea3B();
+                tB.tareaB(pal);
+                int matches = tB.getApariciones();
+                
+                return matches;
+            };
 
             @Override
             public String mostrarMenu() throws RemoteException {
-                return "\n\n------------------\n\n[1] => Sumar\n[2] => Restar\n[3] => Salir\nElige: ";
+                return "\n\n------------------\n\n[1] => Buscar letra\n[2] => Buscar palabra\n[3] => Salir\nElige: ";
             };            
         }, 0);
         this.registry = LocateRegistry.createRegistry(PUERTO);

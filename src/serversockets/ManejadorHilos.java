@@ -1,7 +1,7 @@
 package serversockets;
 
-import funciontareas.Principal;
-import funciontareas.UsoHilos;
+import funciontareas.Tarea3A;
+import funciontareas.Tarea3B;
 import java.io.*;
 import java.net.Socket;
 import java.util.logging.*;
@@ -36,13 +36,13 @@ public class ManejadorHilos implements Runnable {
             switch(opc){
                 case 1:
                     dos.writeUTF("Letra a buscar: ");
-                    Principal p = new Principal();
+                    Tarea3A p = new Tarea3A();
                     dos.writeInt(p.tareaA(dis.readUTF()));
                     //System.out.println(dis.readInt());                    
                 break;
                 case 2:
                     dos.writeUTF("Palabra a buscar: ");
-                    UsoHilos h = new UsoHilos();
+                    Tarea3B h = new Tarea3B();
                     h.tareaB(dis.readUTF());
                     dos.writeInt(h.getApariciones());
                     //System.out.println(dis.readInt());                    

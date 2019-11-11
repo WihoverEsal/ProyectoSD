@@ -106,18 +106,28 @@ public class Funcionalidad {
         
         return conexionRPC;
     }
-    
-    public String procesamientoRMI(int opc, int x1, int x2) throws RemoteException, NotBoundException, MalformedURLException{        
-        float resultado = 0;
-        
+    public String pideLetraoPalRMI(int opc){
+        String pide = "";
         if(opc == 1){
-            resultado = interfazRMI.sumar(x1, x2);
-            System.out.println("La suma es: " + resultado);
-            return "La suma es: " + resultado;
+            pide = "Dame la letra a buscar";
         }else if(opc == 2){
-            resultado = interfazRMI.restar(x1, x2);
-            System.out.println("La resta es: " + resultado);
-            return "La resta es: " + resultado;
+            pide = "Dame la palabra a buscar";
+        }
+        
+        return pide;
+    }
+    
+    public String procesamientoRMI(int opc, String pal) throws RemoteException, NotBoundException, MalformedURLException, IOException, InterruptedException{        
+        int resultado = 0;                      
+        
+        if(opc == 1){                               
+            resultado = interfazRMI.buscaLetra(pal);
+            System.out.println("Numero de coinicidencias: " + resultado);
+            return "Numero de coinicidencias: " + resultado;
+        }else if(opc == 2){                        
+            resultado = interfazRMI.buscaPalabra(pal);
+            System.out.println("Numero de coinicidencias: " + resultado);
+            return "Numero de coinicidencias: " + resultado;
         }else if(opc == 3){
             System.out.println("Servidor RMI desconectado");
             sRMI.apagaRMI();
