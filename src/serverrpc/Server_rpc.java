@@ -10,7 +10,7 @@ public class Server_rpc {
             System.out.println("Iniciando el servidor RPC");
             
             wbServer = new WebServer(8081);
-            OperacionMatematica opMat = new OperacionMatematica();
+            InterfazRPC opMat = new InterfazRPC();
             wbServer.addHandler("myServerRPC", opMat);
         
             wbServer.start();

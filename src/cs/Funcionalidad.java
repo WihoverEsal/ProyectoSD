@@ -73,21 +73,21 @@ public class Funcionalidad {
         //return null;
     }
     
-    public String procesamientoRPC(int opc, int x1, int x2) throws XmlRpcException, IOException{
-        int suma = 0;
-        Vector<Integer> params = new Vector<Integer>();
-        params.add(x1);
-        params.add(x2);
+    public String procesamientoRPC(int opc, String pal) throws XmlRpcException, IOException{
+        int resultado = 0;
+        Vector<Object> params = new Vector<>();
+        params.add(new String(pal));
+        
         if(opc == 1){
-            Object resS = conexionRPC.execute("myServerRPC.suma", params);
-            suma = ((Integer)resS).intValue();
-            System.out.println("La suma es: " + suma);
-            return "La suma es: "+suma;
+            Object resS = conexionRPC.execute("myServerRPC.buscaLetra", params);
+            resultado = ((Integer)resS).intValue();
+            System.out.println("Numero de coinicidencias: " + resultado);
+            return "Numero de coinicidencias: " + resultado;
         }else if(opc == 2){
-            Object resS = conexionRPC.execute("myServerRPC.resta", params);
-            int resta = ((Integer)resS).intValue();
-            System.out.println("La resta es: " + resta);
-            return "La resta es: "+resta;
+            Object resS = conexionRPC.execute("myServerRPC.buscaPalabra", params);
+            resultado = ((Integer)resS).intValue();
+            System.out.println("Numero de coinicidencias: " + resultado);
+            return "Numero de coinicidencias: " + resultado;
         }else if(opc == 3){
             //Debemos cerrar la conexion con serverRPC            
             System.out.println("Servidor RPC desconectado");
@@ -106,7 +106,7 @@ public class Funcionalidad {
         
         return conexionRPC;
     }
-    public String pideLetraoPalRMI(int opc){
+    public String pideLetraoPal(int opc){
         String pide = "";
         if(opc == 1){
             pide = "Dame la letra a buscar";
